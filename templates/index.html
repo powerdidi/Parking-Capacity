@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e8edf4">
+  <title>ظرفیت پارکینگ‌های سطح شهر مشهد</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS (لوکال) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <main class="app">
+    <header class="hero">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">P</div>
+        <div>
+          <h1 class="hero-title">ظرفیت پارکینگ‌های سطح شهر مشهد</h1>
+          <div class="hero-subtitle">اطلاعات ظرفیت پارکینگ‌ها</div>
+        </div>
+      </div>
+
+      <button
+        class="refresh-button"
+        id="refreshButton"
+        type="button"
+        aria-label="به‌روزرسانی اطلاعات"
+        title="به‌روزرسانی"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-3-6.7"/>
+          <path d="M21 3v6h-6"/>
+        </svg>
+      </button>
+    </header>
+
+    <label class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input
+        class="search"
+        id="searchInput"
+        type="search"
+        placeholder="جست‌وجوی نام پارکینگ..."
+        aria-label="جست‌وجوی نام پارکینگ"
+      >
+    </label>
+
+    <div class="filter-wrap">
+      <label class="filter-label" for="typeFilter">نوع پارکینگ</label>
+      <select class="filter-select" id="typeFilter" aria-label="فیلتر بر اساس نوع پارکینگ">
+        <option value="all">همه انواع</option>
+      </select>
+    </div>
+
+    <section class="parking-list" id="parkingList" aria-live="polite">
+      <div class="state">در حال دریافت اطلاعات پارکینگ‌ها…</div>
+    </section>
+
+    <div class="bottom-note">اطلاعات ظرفیت ممکن است با تأخیر به‌روزرسانی شود.</div>
+  </main>
+
+  <!-- مودال نقشه -->
+  <div class="map-modal" id="mapModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mapModalTitle">
+    <div class="map-modal-backdrop" id="mapModalBackdrop"></div>
+    <div class="map-modal-content">
+      <header class="map-modal-header">
+        <h2 class="map-modal-title" id="mapModalTitle">موقعیت پارکینگ</h2>
+        <button class="map-modal-close" id="mapModalClose" type="button" aria-label="بستن نقشه">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </header>
+      <div class="map-modal-body">
+        <div id="parkingMap"></div>
+
+        <!-- بنر پیام نقشه (موقعیت انتخاب کنید، خطا، موفقیت) -->
+        <div class="map-banner" id="mapBanner" style="display: none;">
+          <div class="map-banner-title"></div>
+          <div class="map-banner-message"></div>
+        </div>
+
+        <!-- دکمه‌ی «موقعیت من» -->
+        <button
+          class="locate-me-button"
+          id="locateMeButton"
+          type="button"
+          aria-label="نمایش موقعیت من"
+          title="موقعیت من"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3"/>
+            <path d="M12 19v3"/>
+            <path d="M2 12h3"/>
+            <path d="M19 12h3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS (لوکال) -->
+  <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
