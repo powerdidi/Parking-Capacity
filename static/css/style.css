@@ -1,0 +1,971 @@
+:root {
+  --page: #e8edf4;
+  --surface: #e8edf4;
+  --text: #263247;
+  --muted: #5f6c82;
+  --green: #07875f;
+  --green-light: #13ad79;
+  --red: #c93a3a;
+  --shadow-light: #ffffff;
+  --shadow-dark: #c5ccd6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--page);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--page);
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding:
+    calc(20px + env(safe-area-inset-top))
+    calc(17px + env(safe-area-inset-right))
+    calc(32px + env(safe-area-inset-bottom))
+    calc(17px + env(safe-area-inset-left));
+}
+
+/* سطح برجسته */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px;
+  margin-bottom: 22px;
+  border: 1px solid #ffffff80;
+  border-radius: 23px;
+  background: linear-gradient(145deg, #13ad79, #087b5a);
+  box-shadow:
+    8px 8px 18px #c5ccd6,
+    -8px -8px 18px #ffffff;
+  color: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #ffffff;
+  color: var(--green);
+  box-shadow:
+    4px 4px 9px #066c4d80,
+    -4px -4px 9px #48c99c;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  margin-top: 2px;
+  color: #e2fff4;
+  font-size: 12px;
+}
+
+.refresh-button {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #ffffff50;
+  border-radius: 14px;
+  background: #ffffff1c;
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 9px #066c4d55,
+    -4px -4px 9px #48c99c55;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.refresh-button svg {
+  width: 21px;
+  height: 21px;
+}
+
+.refresh-button:active {
+  transform: scale(.96);
+  box-shadow:
+    inset 3px 3px 6px #066c4d66,
+    inset -3px -3px 6px #48c99c66;
+}
+
+.refresh-button:focus-visible {
+  outline: 3px solid #ffffffcc;
+  outline-offset: 2px;
+}
+
+.refresh-button.loading {
+  pointer-events: none;
+}
+
+.refresh-button.loading svg {
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(-360deg); }
+}
+
+.search-wrap {
+  position: relative;
+  display: block;
+  margin-bottom: 17px;
+}
+
+/* dropdown پیشنهادات جستجوی آدرس */
+.address-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 100;
+  max-height: 280px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(38, 50, 71, 0.18);
+  border: 1px solid #e3e8f0;
+  display: none;
+  animation: suggestionsFadeIn .15s ease-out;
+}
+
+@keyframes suggestionsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f4f9;
+  transition: background .12s;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item:focus-visible {
+  background: #f0fbf4;
+  outline: none;
+}
+
+.suggestion-icon {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  color: var(--green);
+}
+
+.suggestion-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: #263247;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* نشانگر آدرس جستجو شده روی نقشه */
+.search-result-marker-icon {
+  width: 24px;
+  height: 24px;
+  background: #2b7dff;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(43, 125, 255, 0.3), 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.search-result-marker-icon::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(43, 125, 255, 0.2);
+  animation: searchPulse 2s ease-out infinite;
+}
+
+@keyframes searchPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 19px;
+  height: 19px;
+  transform: translateY(-50%);
+  color: #6f7c91;
+  pointer-events: none;
+}
+
+/* کادر فرورفته */
+.search {
+  display: block;
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 14px;
+  border: 1px solid #ffffffa6;
+  border-radius: 16px;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  /* ۱۶ پیکسل از زوم خودکار iOS هنگام فوکوس جلوگیری می‌کند */
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow:
+    inset 5px 5px 10px #cbd2dc,
+    inset -5px -5px 10px #ffffff;
+  transition: box-shadow .2s;
+}
+
+.search::-webkit-search-cancel-button,
+.search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search::placeholder {
+  color: #66738a;
+  font-size: 14px;
+}
+
+.search:focus {
+  box-shadow:
+    inset 3px 3px 7px #c5ccd6,
+    inset -3px -3px 7px #ffffff,
+    0 0 0 3px #0e9f6e33;
+}
+
+/* فیلتر نوع پارکینگ */
+.filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+
+.filter-label {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.filter-select {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #ffffffa6;
+  border-radius: 14px;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow:
+    inset 4px 4px 8px #cbd2dc,
+    inset -4px -4px 8px #ffffff;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235f6c82' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: left 14px center;
+  background-size: 14px 14px;
+  padding-left: 38px;
+  transition: box-shadow .2s;
+}
+
+.filter-select:focus {
+  box-shadow:
+    inset 3px 3px 7px #c5ccd6,
+    inset -3px -3px 7px #ffffff,
+    0 0 0 3px #0e9f6e33;
+}
+
+.filter-select::-ms-expand {
+  display: none;
+}
+
+.parking-list {
+  display: grid;
+  gap: 14px;
+}
+
+/* کارت برجسته */
+.parking-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #ffffffa8;
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow:
+    7px 7px 16px #c5ccd6,
+    -7px -7px 16px #ffffff;
+  transition: transform .18s, box-shadow .18s;
+}
+
+@media (hover: hover) {
+  .parking-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      9px 9px 19px #c1c9d4,
+      -9px -9px 19px #ffffff;
+  }
+}
+
+.parking-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.parking-name {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  font-weight: 700;
+}
+
+.parking-address {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: color .15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.parking-address:hover {
+  color: var(--green);
+}
+
+.parking-address .address-icon {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin-top: 5px;
+  color: #95a0b3;
+  transition: color .15s;
+}
+
+.parking-address:hover .address-icon {
+  color: var(--green);
+}
+
+.parking-address .address-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.parking-address.missing {
+  color: #7d889a;
+}
+
+.parking-address.missing .address-icon {
+  color: #b5bdca;
+}
+
+/* نشان نوع پارکینگ */
+.parking-type {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 9px;
+  border-radius: 8px;
+  background: #e3f5ec;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+/* ردیف متادیتا: badge نوع + دکمه مسیریابی */
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* دکمه‌ی مسیریابی */
+.route-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid #b8e0cd;
+  border-radius: 10px;
+  background: #f0fbf4;
+  color: var(--green);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: transform .15s, background .15s, color .15s;
+}
+
+.route-button svg {
+  width: 13px;
+  height: 13px;
+}
+
+.route-button:hover {
+  background: #d8f3e3;
+  color: #056a47;
+  transform: translateY(-1px);
+}
+
+.route-button:active {
+  transform: translateY(0) scale(.97);
+}
+
+.route-button:focus-visible {
+  outline: 3px solid #0e9f6e55;
+  outline-offset: 2px;
+}
+
+.route-button:disabled,
+.route-button.loading {
+  opacity: 0.7;
+  cursor: wait;
+  pointer-events: none;
+}
+
+.route-button.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* نشانگر موقعیت کاربر روی نقشه */
+.user-marker-icon {
+  width: 20px;
+  height: 20px;
+  background: #2b7dffff;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(43, 125, 255, 0.3), 0 2px 6px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.user-marker-icon::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: rgba(43, 125, 255, 0.2);
+  animation: userPulse 2s ease-out infinite;
+}
+
+@keyframes userPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.capacity-info {
+  width: 154px;
+  flex: 0 0 154px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* کادرهای ظرفیت فرورفته */
+.capacity-item {
+  min-width: 0;
+  padding: 9px 4px;
+  border: 1px solid #ffffff80;
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: center;
+  box-shadow:
+    inset 4px 4px 8px #cbd2dc,
+    inset -4px -4px 8px #ffffff;
+}
+
+.capacity-item.free {
+  color: #087b5a;
+  box-shadow:
+    inset 4px 4px 8px #c5d7cf,
+    inset -4px -4px 8px #ffffff;
+}
+
+.capacity-label {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.capacity-value {
+  display: block;
+  margin-top: 2px;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.capacity-item.free .capacity-value {
+  color: var(--green);
+}
+
+/* پارکینگ پر: عدد صفر سبز نمایش داده نشود */
+.capacity-item.free.full {
+  box-shadow:
+    inset 4px 4px 8px #dccbcf,
+    inset -4px -4px 8px #ffffff;
+}
+
+.capacity-item.free.full .capacity-value {
+  color: var(--red);
+}
+
+.state {
+  padding: 24px 15px;
+  border: 1px solid #ffffffa8;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.9;
+  box-shadow:
+    6px 6px 14px #c5ccd6,
+    -6px -6px 14px #ffffff;
+}
+
+.bottom-note {
+  margin-top: 20px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+/* گوشی‌های باریک: ظرفیت‌ها زیر نام قرار می‌گیرند تا متن فشرده نشود */
+@media (max-width: 375px) {
+  .app {
+    padding-right: calc(12px + env(safe-area-inset-right));
+    padding-left: calc(12px + env(safe-area-inset-left));
+  }
+
+  .hero {
+    padding: 14px;
+  }
+
+  .hero-title {
+    font-size: 15px;
+  }
+
+  .parking-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .capacity-info {
+    width: 100%;
+    flex: none;
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ===== مودال نقشه ===== */
+.map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+.map-modal.open {
+  display: flex;
+}
+
+.map-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(38, 50, 71, 0.55);
+  backdrop-filter: blur(2px);
+  animation: mapFadeIn .2s ease-out;
+}
+
+@keyframes mapFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.map-modal-content {
+  position: relative;
+  width: min(100%, 720px);
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    12px 12px 30px #b8c0cc,
+    -12px -12px 30px #ffffff;
+  animation: mapSlideUp .35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes mapSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.map-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(145deg, #13ad79, #087b5a);
+  color: #fff;
+}
+
+.map-modal-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.6;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.map-modal-close {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #ffffff50;
+  border-radius: 12px;
+  background: #ffffff1c;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s, background .15s;
+}
+
+.map-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.map-modal-close:hover {
+  background: #ffffff33;
+}
+
+.map-modal-close:active {
+  transform: scale(.94);
+}
+
+.map-modal-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+#parkingMap {
+  width: 100%;
+  height: 60vh;
+  min-height: 360px;
+  background: #e8edf4;
+}
+
+/* بنر پیام نقشه */
+.map-banner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  left: 12px;
+  z-index: 1001;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  text-align: right;
+  direction: rtl;
+  pointer-events: none;
+  animation: bannerSlideDown .25s ease-out;
+}
+
+@keyframes bannerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.map-banner-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #263247;
+  margin-bottom: 2px;
+}
+
+.map-banner-message {
+  font-size: 11px;
+  color: #5f6c82;
+  line-height: 1.6;
+}
+
+.map-banner.success {
+  border-right: 4px solid var(--green);
+}
+
+.map-banner.success .map-banner-title {
+  color: var(--green);
+}
+
+.map-banner.error {
+  border-right: 4px solid var(--red);
+}
+
+.map-banner.error .map-banner-title {
+  color: var(--red);
+}
+
+.map-banner.info {
+  border-right: 4px solid #2b7dff;
+}
+
+.map-banner.info .map-banner-title {
+  color: #2b7dff;
+}
+
+/* دکمه‌ی «موقعیت من» — روی نقشه، گوشه‌ی پایین-راست */
+.locate-me-button {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #2b7dff;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(43, 125, 255, 0.4);
+  transition: transform .15s, background .15s, box-shadow .15s;
+}
+
+.locate-me-button svg {
+  width: 22px;
+  height: 22px;
+}
+
+.locate-me-button:hover {
+  background: #1a6ae0;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(43, 125, 255, 0.5);
+}
+
+.locate-me-button:active {
+  transform: scale(.96);
+}
+
+.locate-me-button:focus-visible {
+  outline: 3px solid rgba(43, 125, 255, 0.5);
+  outline-offset: 3px;
+}
+
+.locate-me-button.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.locate-me-button.loading svg {
+  animation: locateSpin 1s linear infinite;
+}
+
+@keyframes locateSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* نشانگر سفارشی پارکینگ روی نقشه */
+.parking-marker-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(145deg, #13ad79, #087b5a);
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  font-weight: 800;
+  font-size: 16px;
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  pointer-events: auto;
+}
+
+.parking-marker-icon span {
+  transform: rotate(45deg);
+}
+
+.parking-marker-popup .leaflet-popup-content {
+  margin: 12px 16px;
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  direction: rtl;
+  text-align: right;
+  min-width: 180px;
+}
+
+.parking-marker-popup .popup-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #263247;
+}
+
+.parking-marker-popup .popup-address {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #5f6c82;
+  line-height: 1.7;
+}
+
+.parking-marker-popup .popup-capacity {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #e8edf4;
+}
+
+.parking-marker-popup .popup-capacity-item {
+  flex: 1;
+  text-align: center;
+}
+
+.parking-marker-popup .popup-capacity-label {
+  display: block;
+  font-size: 10px;
+  color: #5f6c82;
+}
+
+.parking-marker-popup .popup-capacity-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #07875f;
+}
+
+/* رسپانسیو برای موبایل */
+@media (max-width: 520px) {
+  .map-modal {
+    padding: 0;
+  }
+
+  .map-modal-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  #parkingMap {
+    height: calc(100vh - 64px);
+    min-height: 300px;
+  }
+}
